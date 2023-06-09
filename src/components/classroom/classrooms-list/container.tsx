@@ -9,12 +9,14 @@ import { createValidationSchema } from "../validation-schema";
 import { ClassroomFormikInitial, ClassroomFormikProps } from "../types";
 import AddClassroomForm from "./add-form";
 import { Card } from "./card";
+import { Loader } from "../../../commons/components/loader";
+import { isResponseSuccessfully } from "../../../utils/utils";
 
 const refreshToken = "dasdasdasdasdas";
 
 const Class: React.FC = () => {
   const { setTitle } = useTitle();
-  const [classes, setClasses] = useState<Class[]>([]);
+  const [data, setData] = useState<Class[]>([]);
   const { callApi, response, isLoading, error } = useCallApi<Class[]>([]);
 
   useEffect(() => {
@@ -33,11 +35,11 @@ const Class: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (!isLoading) {
-      setClasses(classes.concat(response));
+    if (isResponseSuccessfully(response)) {
+      setData(data.concat(response.data));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [response, isLoading]);
+  }, [response]);
 
   const onSubmit = useCallback(async (values: ClassroomFormikProps) => {
     const newClassroom = {
@@ -78,7 +80,7 @@ const Class: React.FC = () => {
   if (isLoading) {
     return (
       <>
-        <div>Loading...</div>
+        <Loader />
       </>
     );
   }
@@ -95,14 +97,18 @@ const Class: React.FC = () => {
     <Container>
       <FormikContext.Provider value={formikBag}>
         <FixedContainer variant="bottom-right">
-          <FormModal title="Add classroom" handleSubmit={handleSubmit}>
+          <FormModal
+            title="Add classroom"
+            type="add"
+            handleSubmit={handleSubmit}
+          >
             <AddClassroomForm />
           </FormModal>
         </FixedContainer>
       </FormikContext.Provider>
-      {classes &&
-        classes.length > 0 &&
-        classes.map((classroom, index) => (
+      {data &&
+        data.length > 0 &&
+        data.map((classroom, index) => (
           <Card key={index} classroom={classroom} />
         ))}
     </Container>

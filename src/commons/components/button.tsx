@@ -1,59 +1,40 @@
 import React, { ButtonHTMLAttributes } from "react";
+import { useNavigate } from "react-router-dom";
 import { classNames } from "../../utils/className";
-
-// enum Variant {
-//   PRIMARY,
-//   SUCCESSFULLY,
-//   DANGER,
-// }
+import { BackIcon } from "./icon";
 
 enum Variant {
-  PRIMARY = "PRIMARY",
-  SUCCESSFULLY = "SUCCESSFULLY",
-  DANGER = "DANGER",
+  Primary = "primary",
+  Success = "success",
+  Danger = "danger",
 }
 
-const VARIANT_MAPS = {
-  [Variant.PRIMARY]: "bg-blue-100 text-blue-900 hover:bg-blue-200",
-  [Variant.SUCCESSFULLY]: "bg-green-100 text-green-900 hover:bg-green-200",
-  [Variant.DANGER]: "bg-red-100 text-red-900 hover:bg-red-200",
+const VariantMap = {
+  [Variant.Primary]: "bg-blue-100 text-blue-900 hover:bg-blue-200",
+  [Variant.Success]: "bg-green-100 text-green-900 hover:bg-green-200",
+  [Variant.Danger]: "bg-red-100 text-red-900 hover:bg-red-200",
 };
 
 type ButtonProps = {
-  label: string;
-  variant: string;
+  label?: string;
+  variant: "primary" | "success" | "danger";
   onClick?: () => void;
+  children?: React.ReactNode;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 export const Button: React.FC<ButtonProps> = ({
   label,
-  type,
+  type = "button",
   variant,
   onClick,
 }) => {
-  let selectedVariant = "";
-
-  switch (variant) {
-    case Variant.PRIMARY:
-      selectedVariant = VARIANT_MAPS[Variant.PRIMARY];
-      break;
-    case Variant.SUCCESSFULLY:
-      selectedVariant = VARIANT_MAPS[Variant.SUCCESSFULLY];
-      break;
-    case Variant.DANGER:
-      selectedVariant = VARIANT_MAPS[Variant.DANGER];
-      break;
-    default:
-      break;
-  }
-
   return (
     <div className="mt-4">
       <button
         type={type}
         className={classNames(
           "inline-flex justify-center rounded-md border border-transparent px-4 py-2 text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2",
-          selectedVariant
+          VariantMap[variant]
         )}
         onClick={onClick}
       >
@@ -64,37 +45,22 @@ export const Button: React.FC<ButtonProps> = ({
 };
 
 Button.defaultProps = {
-  variant: Variant.PRIMARY,
+  variant: Variant.Primary,
 };
 
 export const RoundedButton: React.FC<ButtonProps> = ({
   label,
-  type,
+  type = "button",
   variant,
   onClick,
 }) => {
-  let selectedVariant = "";
-  switch (variant) {
-    case Variant.PRIMARY:
-      selectedVariant = VARIANT_MAPS[Variant.PRIMARY];
-      break;
-    case Variant.SUCCESSFULLY:
-      selectedVariant = VARIANT_MAPS[Variant.SUCCESSFULLY];
-      break;
-    case Variant.DANGER:
-      selectedVariant = VARIANT_MAPS[Variant.DANGER];
-      break;
-    default:
-      break;
-  }
-
   return (
     <div className="mt-4">
       <button
         type={type}
         className={classNames(
           "w-16 h-16 inline-flex justify-center items-center rounded-full border border-transparent text-3xl font-extrabold shadow-md focus:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2",
-          selectedVariant
+          VariantMap[variant]
         )}
         onClick={onClick}
       >
@@ -105,5 +71,37 @@ export const RoundedButton: React.FC<ButtonProps> = ({
 };
 
 RoundedButton.defaultProps = {
-  variant: Variant.PRIMARY,
+  variant: Variant.Primary,
+};
+
+export const IconButton: React.FC<ButtonProps> = ({
+  children,
+  type = "button",
+  variant,
+  onClick,
+}) => {
+  return (
+    <button
+      type={type}
+      className={classNames(
+        "inline-flex justify-center items-center rounded-full border border-transparent text-3xl font-extrabold focus:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2",
+        VariantMap[variant]
+      )}
+      onClick={onClick}
+    >
+      {children}
+    </button>
+  );
+};
+
+export const BackButton: React.FC = () => {
+  const navigate = useNavigate();
+  return (
+    <button
+      className="rounded-md hover:shadow-sm hover:border-slate-100 hover:bg-slate-100"
+      onClick={() => navigate(-1)}
+    >
+      <BackIcon width="36" height="36" />
+    </button>
+  );
 };

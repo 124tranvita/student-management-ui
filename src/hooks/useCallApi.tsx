@@ -1,16 +1,17 @@
 import { useReducer } from "react";
 import { BASE_URL } from "../utils/fetchAPI";
 import * as Constants from "./constants";
+import { Response } from "../commons/models";
 
 type StateType<T> = {
   isLoading: boolean;
   error: object | null;
-  response: T;
+  response: Response<T>;
 };
 
 type ActionType<T> = {
   type: Constants.Types;
-  payload: T;
+  payload: Response<T>;
   error: object | null;
 };
 
@@ -48,16 +49,25 @@ const useCallApi = <T,>(initData: T) => {
   const [state, dispatch] = useReducer(useCallApiReducer<T>, {
     isLoading: false,
     error: null,
-    response: initData,
+    response: {
+      message: "",
+      result: "",
+      data: initData as T,
+    },
   });
 
   const callApi = async (path: string, options: object) => {
     try {
       const URL = BASE_URL + path;
+      console.log({ URL });
 
       dispatch({
         type: Constants.ACT_API_REQUEST,
-        payload: initData,
+        payload: {
+          message: "",
+          result: "",
+          data: initData as T,
+        },
         error: null,
       });
 
@@ -67,12 +77,17 @@ const useCallApi = <T,>(initData: T) => {
         const error = await response.json();
         dispatch({
           type: Constants.ACT_API_FAILURE,
-          payload: initData,
+          payload: {
+            message: "",
+            result: "",
+            data: initData as T,
+          },
           error: error,
         });
       }
 
       const data = await response.json();
+      console.log({ data });
       dispatch({
         type: Constants.ACT_API_SUCCESS,
         payload: data,

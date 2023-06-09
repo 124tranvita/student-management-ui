@@ -45,6 +45,7 @@ export const classInitial: Class = {
 };
 
 export type Student = {
+  _id: string;
   studentId: string;
   name: string;
   doB: string;
@@ -58,6 +59,7 @@ export type Student = {
 };
 
 export const studentInitial: Student = {
+  _id: "",
   studentId: "",
   name: "",
   doB: "",
@@ -68,4 +70,10 @@ export const studentInitial: Student = {
   avatar: "",
   classes: [],
   mentor: "",
+};
+
+export type Response<T> = {
+  message: string;
+  data: T;
+  result?: string;
 };

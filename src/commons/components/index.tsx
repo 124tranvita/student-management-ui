@@ -8,6 +8,7 @@ import {
   DetailContainer,
   Container,
 } from "./container";
+import { DeleteScreen } from "./delete-screen";
 
 export {
   Typography,
@@ -20,4 +21,5 @@ export {
   FixedContainer,
   DetailContainer,
   Container,
+  DeleteScreen,
 };

@@ -1,42 +1,25 @@
 import React, { Fragment, useState } from "react";
 import { useFormikContext } from "formik";
 import { Dialog, Transition } from "@headlessui/react";
-import { Button, RoundedButton } from "./button";
+import { Button, IconButton, RoundedButton } from "./button";
+import { DeleteIcon } from "./icon";
 
-type FormModalProps = {
-  title: string;
+type DialogModalProps = {
   children: React.ReactNode;
-  handleSubmit?: () => void;
+  isOpen: boolean;
+  button: React.ReactNode;
+  closeModal: () => void;
 };
 
-export const FormModal: React.FC<FormModalProps> = ({
+export const DialogModal: React.FC<DialogModalProps> = ({
   children,
-  title,
-  handleSubmit,
+  button,
+  isOpen,
+  closeModal,
 }) => {
-  const formikBag = useFormikContext();
-  const [isOpen, setIsOpen] = useState(false);
-
-  function closeModal() {
-    setIsOpen(false);
-    formikBag.resetForm();
-  }
-
-  function openModal() {
-    setIsOpen(true);
-  }
-
   return (
-    <>
-      <div className="flex items-center justify-center">
-        <RoundedButton
-          type="button"
-          label="+"
-          onClick={openModal}
-          variant="PRIMARY"
-        />
-      </div>
-
+    <React.Fragment>
+      <div className="flex items-center justify-center">{button}</div>
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={closeModal}>
           <Transition.Child
@@ -62,35 +45,311 @@ export const FormModal: React.FC<FormModalProps> = ({
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                  <Dialog.Title
-                    as="h3"
-                    className="text-lg font-medium leading-6 text-gray-900"
-                  >
-                    {title}
-                  </Dialog.Title>
-                  <div className="mt-2">{children}</div>
-
-                  <div className="flex justify-around mt-4">
-                    <Button
-                      type="submit"
-                      label="Add"
-                      variant="PRIMARY"
-                      onClick={handleSubmit}
-                    />
-                    <Button
-                      type="button"
-                      label="Close"
-                      variant="DANGER"
-                      onClick={closeModal}
-                    />
-                  </div>
-                </Dialog.Panel>
+                {children}
               </Transition.Child>
             </div>
           </div>
         </Dialog>
       </Transition>
+    </React.Fragment>
+  );
+};
+
+type FormModalProps = {
+  title: string;
+  children: React.ReactNode;
+  handleSubmit?: () => void;
+  type?: "add" | "update" | "assign" | "delete" | "unassign";
+};
+
+/** Add form dialog modal */
+export const AddFormModal: React.FC<FormModalProps> = ({
+  children,
+  title,
+  handleSubmit,
+}) => {
+  const formikBag = useFormikContext();
+  const [isOpen, setIsOpen] = useState(false);
+
+  const RenderedButton = (
+    <>
+      <RoundedButton
+        type="button"
+        label="+"
+        onClick={openModal}
+        variant="primary"
+      />
     </>
+  );
+
+  function closeModal() {
+    setIsOpen(false);
+    formikBag.setErrors({});
+    formikBag.resetForm();
+  }
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  return (
+    <DialogModal
+      isOpen={isOpen}
+      button={RenderedButton}
+      closeModal={closeModal}
+    >
+      <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+        <Dialog.Title
+          as="h3"
+          className="text-lg font-medium leading-6 text-gray-900"
+        >
+          {title}
+        </Dialog.Title>
+        <div className="mt-2">{children}</div>
+
+        <div className="flex justify-around mt-4">
+          <Button
+            type="submit"
+            label="Add"
+            variant="primary"
+            onClick={handleSubmit}
+          />
+          <Button
+            type="button"
+            label="Close"
+            variant="danger"
+            onClick={closeModal}
+          />
+        </div>
+      </Dialog.Panel>
+    </DialogModal>
+  );
+};
+
+/** Update form dialog modal */
+export const UpdateFormModal: React.FC<FormModalProps> = ({
+  children,
+  title,
+  handleSubmit,
+}) => {
+  const formikBag = useFormikContext();
+  const [isOpen, setIsOpen] = useState(false);
+
+  const RenderedButton = (
+    <>
+      <Button onClick={openModal} label="Update" variant="primary" />
+    </>
+  );
+
+  function closeModal() {
+    setIsOpen(false);
+    formikBag.setErrors({});
+  }
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  return (
+    <DialogModal
+      isOpen={isOpen}
+      button={RenderedButton}
+      closeModal={closeModal}
+    >
+      <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+        <Dialog.Title
+          as="h3"
+          className="text-lg font-medium leading-6 text-gray-900"
+        >
+          {title}
+        </Dialog.Title>
+        <div className="mt-2">{children}</div>
+
+        <div className="flex justify-around mt-4">
+          <Button
+            type="submit"
+            label="Update"
+            variant="primary"
+            onClick={handleSubmit}
+          />
+          <Button
+            type="button"
+            label="Close"
+            variant="danger"
+            onClick={closeModal}
+          />
+        </div>
+      </Dialog.Panel>
+    </DialogModal>
+  );
+};
+
+/** Assign form dialog modal */
+export const AsignFormModal: React.FC<FormModalProps> = ({
+  children,
+  title,
+  handleSubmit,
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const RenderedButton = (
+    <>
+      <Button onClick={openModal} label="Assign" variant="primary" />
+    </>
+  );
+
+  function closeModal() {
+    setIsOpen(false);
+  }
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  return (
+    <DialogModal
+      isOpen={isOpen}
+      button={RenderedButton}
+      closeModal={closeModal}
+    >
+      <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+        <Dialog.Title
+          as="h3"
+          className="text-lg font-medium leading-6 text-gray-900"
+        >
+          {title}
+        </Dialog.Title>
+        <div className="mt-2">{children}</div>
+
+        <div className="flex justify-around mt-4">
+          <Button
+            type="submit"
+            label="Assign"
+            variant="primary"
+            onClick={handleSubmit}
+          />
+          <Button
+            type="button"
+            label="Close"
+            variant="danger"
+            onClick={closeModal}
+          />
+        </div>
+      </Dialog.Panel>
+    </DialogModal>
+  );
+};
+
+/** Unasign form dialog modal */
+export const UnasignFormModal: React.FC<FormModalProps> = ({
+  children,
+  title,
+  handleSubmit,
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const RenderedButton = (
+    <>
+      <IconButton variant="danger" onClick={openModal}>
+        <DeleteIcon />
+      </IconButton>
+    </>
+  );
+
+  function closeModal() {
+    setIsOpen(false);
+  }
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  return (
+    <DialogModal
+      isOpen={isOpen}
+      button={RenderedButton}
+      closeModal={closeModal}
+    >
+      <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+        <Dialog.Title
+          as="h3"
+          className="text-lg font-medium leading-6 text-gray-900"
+        >
+          {title}
+        </Dialog.Title>
+        <div className="mt-2">{children}</div>
+
+        <div className="flex justify-around mt-4">
+          <Button
+            type="submit"
+            label="Unassign"
+            variant="danger"
+            onClick={handleSubmit}
+          />
+          <Button
+            type="button"
+            label="Close"
+            variant="primary"
+            onClick={closeModal}
+          />
+        </div>
+      </Dialog.Panel>
+    </DialogModal>
+  );
+};
+
+/** Delete form dialog modal */
+export const DeleteFormModal: React.FC<FormModalProps> = ({
+  children,
+  title,
+  handleSubmit,
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const RenderedButton = (
+    <>
+      <Button onClick={openModal} label="Delete" variant="danger" />
+    </>
+  );
+
+  function closeModal() {
+    setIsOpen(false);
+  }
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  return (
+    <DialogModal
+      isOpen={isOpen}
+      button={RenderedButton}
+      closeModal={closeModal}
+    >
+      <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+        <Dialog.Title
+          as="h3"
+          className="text-lg font-medium leading-6 text-gray-900"
+        >
+          {title}
+        </Dialog.Title>
+        <div className="mt-2">{children}</div>
+
+        <div className="flex justify-around mt-4">
+          <Button
+            type="submit"
+            label="Delete"
+            variant="danger"
+            onClick={handleSubmit}
+          />
+          <Button
+            type="button"
+            label="Close"
+            variant="primary"
+            onClick={closeModal}
+          />
+        </div>
+      </Dialog.Panel>
+    </DialogModal>
   );
 };

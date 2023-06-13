@@ -2,7 +2,6 @@ import React from "react";
 import { Class } from "../../../commons/models";
 import { HashDiv, Typography } from "../../../commons/components";
 import { formatFullDate } from "../../../utils/dateFormat";
-import { Button } from "../../../commons/components/button";
 
 type CardProps = {
   classroom: Class;
@@ -21,11 +20,11 @@ export const Card: React.FC<CardProps> = ({ classroom }) => {
         />
         <div className="py-4">
           <Typography text={name} type="title" size="large" />
-          <Typography text={description} type="base" />
+          <Typography text={description} type="description" />
           <Typography text={`${students.length} enrolled`} type="base" />
           <Typography text={formatFullDate(createdAt)} type="muted" />
         </div>
-        <div className="px-6 pt-4 pb-2">
+        <div className="pt-4 pb-2">
           {languages[0] ? (
             languages.map((item: string, index: number) => (
               <HashDiv key={index} value={item} />
@@ -33,14 +32,6 @@ export const Card: React.FC<CardProps> = ({ classroom }) => {
           ) : (
             <></>
           )}
-        </div>
-        <div className="flex justify-start">
-          <div className="mr-4">
-            <Button label="Edit" variant="PRIMARY" />
-          </div>
-          <div>
-            <Button label="Delete" variant="DANGER" />
-          </div>
         </div>
       </div>
     </div>

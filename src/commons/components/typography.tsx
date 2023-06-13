@@ -2,7 +2,7 @@ import { classNames } from "../../utils/className";
 
 type TypographyProps = {
   text: string;
-  type: "title" | "base" | "muted" | "name";
+  type: "title" | "description" | "base" | "muted" | "name";
   size?: "normal" | "small" | "large";
 };
 
@@ -14,6 +14,7 @@ enum Size {
 
 enum Type {
   Title = "title",
+  Description = "description",
   Name = "name",
   Muted = "muted",
   Base = "base",
@@ -27,6 +28,7 @@ const SizeMap = {
 
 const TypeMap = {
   [Type.Title]: "text-gray-700 font-bold mb-3",
+  [Type.Description]: "text-gray-500 mb-3 text-lg",
   [Type.Name]: "text-slate-600 font-semibold",
   [Type.Muted]: "text-slate-400",
   [Type.Base]: "text-slate-600",

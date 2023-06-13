@@ -24,7 +24,7 @@ export const Card: React.FC<CardProps> = ({ classroom }) => {
             <Typography text={`${students.length} enrolled`} type="base" />
             <Typography text={formatFullDate(createdAt)} type="muted" />
           </div>
-          <div className="px-6 pt-4 pb-2">
+          <div className="px-6 py-6">
             {languages[0] ? (
               languages.map((item: string, index: number) => (
                 <HashDiv key={index} value={item} />

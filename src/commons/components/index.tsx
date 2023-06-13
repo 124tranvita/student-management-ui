@@ -1,13 +1,17 @@
 import Typography from "./typography";
 import { AvatarImg } from "./image";
 import { FormikTextInput, FormikCheckbox, FormikSelect } from "./formik";
-import { FormModal } from "./dialogs";
+import { AddFormModal, UpdateFormModal } from "./dialogs";
 import {
   HashDiv,
   FixedContainer,
   DetailContainer,
   Container,
+  FlexContainer,
 } from "./container";
+import { DeleteScreen } from "./delete-screen";
+import { PageTransition } from "./transition";
+import { Pagination } from "./pagination";
 
 export {
   Typography,
@@ -15,9 +19,14 @@ export {
   FormikTextInput,
   FormikCheckbox,
   FormikSelect,
-  FormModal,
+  AddFormModal,
+  UpdateFormModal,
   HashDiv,
   FixedContainer,
   DetailContainer,
   Container,
+  DeleteScreen,
+  PageTransition,
+  FlexContainer,
+  Pagination,
 };

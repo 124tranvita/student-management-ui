@@ -1,4 +1,4 @@
-import React, { ButtonHTMLAttributes } from "react";
+import React, { ButtonHTMLAttributes, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { classNames } from "../../utils/className";
 import { BackIcon } from "./icon";
@@ -94,12 +94,21 @@ export const IconButton: React.FC<ButtonProps> = ({
   );
 };
 
-export const BackButton: React.FC = () => {
+export const BackButton: React.FC<{ path?: string }> = ({ path }) => {
   const navigate = useNavigate();
+
+  const hanldeNavigate = useCallback(() => {
+    if (path) {
+      return navigate(path);
+    }
+    return navigate(-1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [path]);
+
   return (
     <button
       className="rounded-md hover:shadow-sm hover:border-slate-100 hover:bg-slate-100"
-      onClick={() => navigate(-1)}
+      onClick={hanldeNavigate}
     >
       <BackIcon width="36" height="36" />
     </button>

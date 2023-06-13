@@ -30,6 +30,7 @@ export type Class = {
   mentor: string;
   students: Student[];
   members?: Student[];
+  assigned?: Assign[];
 };
 
 export const classInitial: Class = {
@@ -42,6 +43,7 @@ export const classInitial: Class = {
   mentor: "",
   students: [],
   members: [],
+  assigned: [],
 };
 
 export type Student = {
@@ -72,8 +74,23 @@ export const studentInitial: Student = {
   mentor: "",
 };
 
+export type Assign = {
+  _id: string;
+  classroom: Class;
+  student: Student | string;
+  assignedAt: string;
+};
+
+export const assignInitial = {
+  _id: "",
+  classroom: classInitial,
+  student: "",
+  assignedAt: "",
+};
+
 export type Response<T> = {
   message: string;
   data: T;
   result?: string;
+  grossCnt?: number;
 };

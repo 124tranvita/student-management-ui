@@ -9,10 +9,15 @@ type Props = {
 /** General container */
 export const Container: React.FC<Props> = ({ children }) => {
   return (
-    <div className="container md:w-4/6 mx-auto">
-      <div className="flex justify-around flex-wrap">{children}</div>
+    <div className="container md:w-4/6 mx-auto items-center">
+      <div className="w-full flex justify-around flex-wrap">{children}</div>
     </div>
   );
+};
+
+/** General container */
+export const FlexContainer: React.FC<Props> = ({ children }) => {
+  return <div className="w-full flex flex-wrap justify-start">{children}</div>;
 };
 
 /** Detail container */
@@ -43,7 +48,7 @@ const VariantMap = {
   [Variant.TOP_LEFT]: "top-12 left-12",
   [Variant.TOP_RIGHT]: "top-12 right-12",
   [Variant.BOTTOM_LEFT]: "bottom-12 left-12",
-  [Variant.BOTTOM_RIGHT]: "bottom-12 right-12",
+  [Variant.BOTTOM_RIGHT]: "bottom-16 right-20",
 };
 
 export const FixedContainer: React.FC<FixedContainerProps> = ({

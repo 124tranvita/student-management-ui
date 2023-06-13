@@ -87,7 +87,7 @@ const useCallApi = <T,>(initData: T) => {
       }
 
       const data = await response.json();
-      console.log({ data });
+      
       dispatch({
         type: Constants.ACT_API_SUCCESS,
         payload: data,

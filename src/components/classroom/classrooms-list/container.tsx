@@ -1,16 +1,21 @@
 import { useCallback, useEffect, useState } from "react";
 import { FormikContext, useFormik } from "formik";
-import { Container, FixedContainer } from "../../../commons/components";
-import { FormModal } from "../../../commons/components/dialogs";
+import {
+  FixedContainer,
+  DetailContainer,
+  FlexContainer,
+} from "../../../commons/components";
+import { AddFormModal } from "../../../commons/components/dialogs";
 import { Class } from "../../../commons/models";
+import { Loader } from "../../../commons/components/loader";
+import { BackButton } from "../../../commons/components/button";
 import useCallApi from "../../../hooks/useCallApi";
 import useTitle from "../../../hooks/useTitle";
-import { createValidationSchema } from "../validation-schema";
+import { isResponseSuccessfully } from "../../../utils/utils";
 import { ClassroomFormikInitial, ClassroomFormikProps } from "../types";
+import { createValidationSchema } from "../validation-schema";
 import AddClassroomForm from "./add-form";
 import { Card } from "./card";
-import { Loader } from "../../../commons/components/loader";
-import { isResponseSuccessfully } from "../../../utils/utils";
 
 const refreshToken = "dasdasdasdasdas";
 
@@ -20,7 +25,7 @@ const Class: React.FC = () => {
   const { callApi, response, isLoading, error } = useCallApi<Class[]>([]);
 
   useEffect(() => {
-    setTitle("Class Management");
+    setTitle("Classrooms");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -65,6 +70,7 @@ const Class: React.FC = () => {
 
   const formikBag = useFormik({
     initialValues: ClassroomFormikInitial,
+    validateOnBlur: false,
     validationSchema: createValidationSchema,
     onSubmit,
   });
@@ -79,9 +85,9 @@ const Class: React.FC = () => {
 
   if (isLoading) {
     return (
-      <>
+      <DetailContainer>
         <Loader />
-      </>
+      </DetailContainer>
     );
   }
 
@@ -94,24 +100,27 @@ const Class: React.FC = () => {
   }
 
   return (
-    <Container>
-      <FormikContext.Provider value={formikBag}>
-        <FixedContainer variant="bottom-right">
-          <FormModal
-            title="Add classroom"
-            type="add"
-            handleSubmit={handleSubmit}
-          >
-            <AddClassroomForm />
-          </FormModal>
-        </FixedContainer>
-      </FormikContext.Provider>
-      {data &&
-        data.length > 0 &&
-        data.map((classroom, index) => (
-          <Card key={index} classroom={classroom} />
-        ))}
-    </Container>
+    <DetailContainer>
+      <BackButton path="/" />
+      <FlexContainer>
+        <FormikContext.Provider value={formikBag}>
+          <FixedContainer variant="bottom-right">
+            <AddFormModal
+              title="Add classroom"
+              type="add"
+              handleSubmit={handleSubmit}
+            >
+              <AddClassroomForm />
+            </AddFormModal>
+          </FixedContainer>
+        </FormikContext.Provider>
+        {data &&
+          data.length > 0 &&
+          data.map((classroom, index) => (
+            <Card key={index} classroom={classroom} />
+          ))}
+      </FlexContainer>
+    </DetailContainer>
   );
 };
 

@@ -11,3 +11,15 @@ export const Loader: React.FC = () => {
     </div>
   );
 };
+
+export const ComponentLoader: React.FC = () => {
+  return (
+    <div className="absolute inset-0 flex items-center justify-center">
+      <div className="flex items-center justify-center space-x-2 animate-bounce ">
+        <div className="w-4 h-4 bg-blue-400 animate-spin"></div>
+        <div className="w-4 h-4 bg-green-400 animate-spin"></div>
+        <div className="w-4 h-4 bg-black animate-spin"></div>
+      </div>
+    </div>
+  );
+};
